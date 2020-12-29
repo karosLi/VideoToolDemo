@@ -6,6 +6,7 @@
 //
 
 #import "AppDelegate.h"
+#import "VideoCompress.h"
 
 @interface AppDelegate ()
 
@@ -15,8 +16,38 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    // Insert code here to initialize your application
+//    NSString *originUrl = [[NSBundle mainBundle] pathForResource:@"zoo_origin_3200kb" ofType:@"MOV"];
+//    NSString *outputUrl = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"zoo1.mp4"];
+    
+//    NSString *originUrl = [[NSBundle mainBundle] pathForResource:@"office_origin_8000kb" ofType:@"MOV"];
+//    NSString *outputUrl = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"office.mp4"];
+    
+    NSString *originUrl = [[NSBundle mainBundle] pathForResource:@"code_origin_22000kb" ofType:@"mp4"];
+    NSString *outputUrl = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"code.mp4"];
+    
+    NSLog(@"The original video at %@", originUrl);
+    NSLog(@"The output video at %@", outputUrl);
+    
+    [VideoCompress deleteOutputUrlIfNeed:[NSURL fileURLWithPath:outputUrl]];
+    NSFileManager *manager = [NSFileManager defaultManager];
+    if ([manager fileExistsAtPath:originUrl]) {
+        
+//        [[VideoCompress new] compressVideo1:[NSURL fileURLWithPath:originUrl] withOutputUrl:[NSURL fileURLWithPath:outputUrl]];
+        
+        [[VideoCompress new] compressVideo2:[NSURL fileURLWithPath:originUrl] withOutputUrl:[NSURL fileURLWithPath:outputUrl]];
+        
+    }
+    
     return YES;
+}
+
+- (void)copyVideo:(NSString *)fromUrl ToUrl:(NSString *)toUrl {
+    //将视频文件copy到沙盒目录中
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSError *error = nil;
+    [manager copyItemAtURL:[NSURL URLWithString:fromUrl] toURL:[NSURL URLWithString:toUrl] error:&error];
 }
 
 
