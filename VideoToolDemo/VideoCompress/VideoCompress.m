@@ -394,11 +394,19 @@
     CGFloat longSide = naturalSize.width > naturalSize.height ? naturalSize.width : naturalSize.height;
     CGFloat shortSide = naturalSize.width > naturalSize.height ? naturalSize.height : naturalSize.width;
     CGFloat radio = shortSide / longSide;
-    // 固定长边是 1280
+    //  
     if (isVideoPortrait) {
-        naturalSize = CGSizeMake(floor(1280 * radio), 1280);
+        if (longSide < 1280) {
+            naturalSize = CGSizeMake(shortSide, longSide);
+        } else {
+            naturalSize = CGSizeMake(floor(1280 * radio), 1280);
+        }
     } else {
-        naturalSize = CGSizeMake(1280, floor(1280 * radio));
+        if (longSide < 1280) {
+            naturalSize = CGSizeMake(longSide, shortSide);
+        } else {
+            naturalSize = CGSizeMake(1280, floor(1280 * radio));
+        }
     }
     
     // 目标：720P（1280x720），数据密度 = [码率/(像素*帧率)]，抖音+西瓜的视频数据密度是 0.08，这里可以参考这个数据密度来动态计算码率
